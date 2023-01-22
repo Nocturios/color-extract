@@ -49,21 +49,17 @@ function mainColor(c) {
   }
 
   function hexToRgb(hex) {
-    // Vérifier si la chaîne hexadécimale est valide
     if (!hex || hex.length < 3) {
       throw new Error("Invalid hex value");
     }
-    // Vérifier si la chaîne hexadécimale est au format court (ex: #FFF)
     if (hex.length === 4) {
       hex = hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
     } else if (hex.length === 7) {
       hex = hex.substring(1);
     }
-    // Extraire les valeurs rouge, vert et bleu
     let r = parseInt(hex.substring(0, 2), 16);
     let g = parseInt(hex.substring(2, 4), 16);
     let b = parseInt(hex.substring(4, 6), 16);
-    // Retourner les valeurs en un objet RGB
     return {r, g, b};
   }
   function sortColorsByFrequency(c) {
@@ -76,17 +72,11 @@ function mainColor(c) {
   function detectColorPalette(c) {
     let colors = getColors(c);
     let colorArray = Object.entries(colors);
-  
-    // Initialize k-means clustering with 2 clusters (for warm and cool colors)
     let kmeans = new KMeans();
     kmeans.cluster(colorArray, 2);
-  
-    // Assign labels to clusters
     let clusters = kmeans.clusters;
     let warmCluster = clusters[0];
     let coolCluster = clusters[1];
-  
-    // Determine which cluster is which by finding the mean hue of each cluster
     let warmHue = 0;
     for (let i = 0; i < warmCluster.length; i++) {
       let color = warmCluster[i][0];
@@ -94,7 +84,6 @@ function mainColor(c) {
       warmHue += hsl[0];
     }
     warmHue /= warmCluster.length;
-  
     let coolHue = 0;
     for (let i = 0; i < coolCluster.length; i++) {
       let color = coolCluster[i][0];
@@ -113,9 +102,5 @@ function mainColor(c) {
       return palette;
     }
   }
-
-      
-
-
 
 export { getColors, mainColor, rgbToHex, hexToRgb, sortColorsByFrequency, detectColorPalette };
